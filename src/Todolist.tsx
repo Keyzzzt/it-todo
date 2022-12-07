@@ -35,7 +35,7 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
         return () => changeTodoListFilter(filter)
     }
 
-    // Pre JSX
+    // JSX as variable
     const tasksListItems = tasks.map(task => {
         const remove = () => removeTask(task.id)
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => changeIsDoneStatus(task.id, e.currentTarget.checked)
@@ -65,6 +65,7 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
             </button>
         </div>
         <ul>
+            {/*Стандартный вариант*/}
             {/*{tasks.map(el => {*/}
             {/*    return (*/}
             {/*        <li key={el.id}>*/}
@@ -78,6 +79,8 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
             {/*        </li>*/}
             {/*    )*/}
             {/*})}*/}
+
+            {/*Вариант с выносом JSX в переменную*/}
             {tasksListItems}
         </ul>
         <div>
