@@ -3,16 +3,18 @@ import {FilterValuesType, TaskType} from './App';
 
 
 type PropsType = {
+    id: string
     title: string
     tasks: TaskType[]
     filter: string
-    removeTask: (id: string) => void
-    addTask: (title: string) => void
-    changeTodoListFilter: (nextFilterValue: FilterValuesType) => void
-    changeIsDoneStatus: (taskId: string, status: boolean) => void
+    addTask: (title: string, removeTodoList: string) => void
+    removeTask: (id: string, removeTodoList: string) => void
+    removeTodoList: (todoListId: string) => void
+    changeFilter: (nextFilterValue: FilterValuesType, removeTodoList: string) => void
+    changeStatus: (taskId: string, status: boolean, removeTodoList: string) => void
 }
 
-export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoListFilter, changeIsDoneStatus}: PropsType) {
+export function TodoList({id, title, filter, tasks, removeTask, removeTodoList, addTask, changeFilter, changeStatus}: PropsType) {
     // State
     const [taskTitle, setTaskTitle] = useState<string>('')
 
@@ -22,7 +24,7 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
             alert('Please fill task title')
             return
         }
-        addTask(taskTitle)
+        addTask(taskTitle.trim(), id)
         setTaskTitle('')
     }
     const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => setTaskTitle(e.currentTarget.value)
@@ -32,20 +34,20 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
         }
     }
     const onClickHandlerCreator = (filter: FilterValuesType) => {
-        return () => changeTodoListFilter(filter)
+        return () => changeFilter(filter, id)
     }
 
     // JSX as variable
     const tasksListItems = tasks.map(task => {
-        const remove = () => removeTask(task.id)
-        const changeStatus = (e: ChangeEvent<HTMLInputElement>) => changeIsDoneStatus(task.id, e.currentTarget.checked)
+        const remove = () => removeTask(task.id, id)
+        const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => changeStatus(task.id, e.currentTarget.checked, id)
 
         return (
             <li key={task.id}>
                 <input
                     type="checkbox"
                     checked={task.isDone}
-                    onChange={changeStatus}
+                    onChange={changeStatusHandler}
                 />
                 <span>{task.title}</span>
                 <button onClick={remove}>X</button>
@@ -55,6 +57,7 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
 
     return <div>
         <h3>{title}</h3>
+        <button onClick={() => removeTodoList(id)}>Remove List</button>
         <div>
             <input
                 onKeyDown={addTaskOnEnterHandler}
@@ -65,22 +68,6 @@ export function TodoList({title, filter, tasks, removeTask, addTask, changeTodoL
             </button>
         </div>
         <ul>
-            {/*Стандартный вариант*/}
-            {/*{tasks.map(el => {*/}
-            {/*    return (*/}
-            {/*        <li key={el.id}>*/}
-            {/*            <button onClick={() => removeTask(el.id)}>X</button>*/}
-            {/*            <input*/}
-            {/*                type="checkbox"*/}
-            {/*                onChange={(e) => changeIsDoneStatus(el.id, e.currentTarget.checked)}*/}
-            {/*                checked={el.isDone}*/}
-            {/*            />*/}
-            {/*            <span>{el.title}</span>*/}
-            {/*        </li>*/}
-            {/*    )*/}
-            {/*})}*/}
-
-            {/*Вариант с выносом JSX в переменную*/}
             {tasksListItems}
         </ul>
         <div>
