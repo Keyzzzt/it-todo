@@ -1,9 +1,9 @@
 import React, { ChangeEvent } from "react"
-import { AddItemsForm } from "../AddItemsForm"
+import { AddTaskForm } from "../AddTaskForm"
 import { FilterValuesType, TaskType } from "../../App"
 import s from "./TodoList.module.css"
 import { EditableSpan } from "../EditableSpan/EditableSpan"
-import { Button } from "@mui/material"
+import {Button, List, ListItem} from "@mui/material"
 import IconButton from "@mui/material/IconButton"
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
@@ -59,7 +59,7 @@ export function TodoList({
       changeTaskTitle(task.id, todoListId, newTitle)
     }
     return (
-      <li key={task.id}>
+      <ListItem key={task.id}>
         <input
           type="checkbox"
           checked={task.isDone}
@@ -69,7 +69,7 @@ export function TodoList({
         <IconButton  size={'small'} onClick={remove}>
             <DeleteForeverIcon />
         </IconButton>
-      </li>
+      </ListItem>
     )
   })
 
@@ -77,14 +77,16 @@ export function TodoList({
     <div>
       <h3>
         <EditableSpan title={title} changeTitle={changeTitle} />
-        <button onClick={() => removeTodoList(todoListId)}>Remove List</button>
+        <IconButton  size={'small'} onClick={() => removeTodoList(todoListId)}>
+          <DeleteForeverIcon />
+        </IconButton>
       </h3>
-      <AddItemsForm
+
+      <AddTaskForm
         addItem={addTaskHandler}
-        buttonTitle={"Add new task"}
-        placeHolder={"Add new task"}
+        placeHolder={"Title"}
       />
-      <ul>{tasksListItems}</ul>
+      <List>{tasksListItems}</List>
       <div className={s.filterButtonsContainer}>
         <Button
           variant="contained"
