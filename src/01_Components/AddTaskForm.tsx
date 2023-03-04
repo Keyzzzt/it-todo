@@ -1,21 +1,19 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react"
 import s from './styles.module.css'
+import {Button, IconButton, TextField} from "@mui/material";
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import {AddBoxOutlined} from "@mui/icons-material";
 
 type PropsType = {
-    buttonTitle: string
     placeHolder: string
     addItem: (title: string) => void
 
 }
 
-export function AddItemsForm({buttonTitle, placeHolder, addItem}: PropsType) {
-    /**
-     * ! State */
+export function AddTaskForm({placeHolder, addItem}: PropsType) {
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
 
-    /**
-     * ! Fn */
     const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         error && setError(false)
         setTitle(e.currentTarget.value)
@@ -30,19 +28,27 @@ export function AddItemsForm({buttonTitle, placeHolder, addItem}: PropsType) {
     }
 
     const onEnter = (e: KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && onClickAddItem()
-    /**
-     * ! JSX */
+
     return (
         <div>
-            <input
+            <TextField
                 onKeyDown={onEnter}
                 onChange={setTitleHandler}
                 value={title}
                 className={error ? s.errorInput : undefined}
                 placeholder={placeHolder}
+                // Material
+                id="outlined-basic"
+                label="Add title"
+                variant="outlined"
+                size='small'
+                error={error}
+                helperText={error && 'Task title is required!'}
             />
-            <button onClick={onClickAddItem}>{buttonTitle}</button>
-            {error && <div className={s.errorMessage}>Please enter title!</div>}
+
+            <IconButton onClick={onClickAddItem}>
+                <AddBoxOutlined />
+            </IconButton>
         </div>
     )
 }

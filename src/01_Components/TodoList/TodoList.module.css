@@ -2,16 +2,3 @@
     display: flex;
     justify-content: space-around;
 }
-/* .filterButtonsContainer button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: aquamarine;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-} */
-/* .activeFilter {
-    background-color: brown !important;
-    color: beige;
-} */

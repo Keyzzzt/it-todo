@@ -18,19 +18,19 @@ export type TaskType = {
 }
 
 const initialState: TasksStateType = {
-  [v1()]: [
+  '1': [
     { id: v1(), title: "HTML&CSS", isDone: true },
     { id: v1(), title: "JS", isDone: true },
     { id: v1(), title: "ReactJS", isDone: false },
   ],
-  [v1()]: [
+  '2': [
     { id: v1(), title: "Toyota oil", isDone: false },
     { id: v1(), title: "Glass cans", isDone: false },
     { id: v1(), title: "Oil filter", isDone: false },
   ],
 }
 export const tasksReducer = (
-  state: InitialStateType,
+  state: InitialStateType = initialState,
   action: ActionType
 ): TasksStateType => {
   switch (action.type) {
@@ -74,7 +74,7 @@ export const tasksReducer = (
         ),
       }
     default:
-      return { ...state }
+      return state
   }
 }
 export const actions = {
