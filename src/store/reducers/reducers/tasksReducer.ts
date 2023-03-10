@@ -18,15 +18,15 @@ export type TaskType = {
 }
 
 const initialState: TasksStateType = {
-  '1': [
-    { id: v1(), title: "HTML&CSS", isDone: true },
-    { id: v1(), title: "JS", isDone: true },
-    { id: v1(), title: "ReactJS", isDone: false },
+  "1": [
+    { id: "2w", title: "HTML&CSS", isDone: true },
+    { id: "5t", title: "JS", isDone: true },
+    { id: "4l", title: "ReactJS", isDone: false },
   ],
-  '2': [
-    { id: v1(), title: "Toyota oil", isDone: false },
-    { id: v1(), title: "Glass cans", isDone: false },
-    { id: v1(), title: "Oil filter", isDone: false },
+  "2": [
+    { id: "1p", title: "Toyota oil", isDone: false },
+    { id: "o0l", title: "Glass cans", isDone: false },
+    { id: "kd8", title: "Oil filter", isDone: false },
   ],
 }
 export const tasksReducer = (
@@ -44,10 +44,10 @@ export const tasksReducer = (
       }
     case "TODOLISTS/TASKS/ADD-TODOLIST":
       return { ...state, [action.payload.id]: [] }
-      case "TODOLISTS/TASKS/REMOVE-TODOLIST":
-        const stateCopy = {...state}
-        delete stateCopy[action.payload.id]
-        return stateCopy
+    case "TODOLISTS/TASKS/REMOVE-TODOLIST":
+      const stateCopy = { ...state }
+      delete stateCopy[action.payload.id]
+      return stateCopy
     case "TASKS/REMOVE-SINGLE_TASK":
       return {
         ...state,

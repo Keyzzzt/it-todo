@@ -1,7 +1,8 @@
+import { Provider } from "react-redux"
 import { applyMiddleware, combineReducers, compose, createStore } from "redux"
 import thunk from "redux-thunk"
-import { tasksReducer } from "./reducers/reducers/tasksReducer"
-import { todoListsReducer } from "./reducers/reducers/todoListsReducer"
+import { tasksReducer } from "../store/reducers/reducers/tasksReducer"
+import { todoListsReducer } from "../store/reducers/reducers/todoListsReducer"
 
 const rootReducer = combineReducers({
   todos: todoListsReducer,
@@ -30,9 +31,13 @@ const initialGlobalState = {
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 // @ts-ignore
-export const store = createStore(
+export const storybookStore = createStore(
   rootReducer,
   initialGlobalState as StateType,
   composeEnhancers(applyMiddleware(thunk))
 )
 export type StateType = ReturnType<typeof rootReducer>
+
+export const reduxStoreProviderDecorator = (storyFn: any) => {
+  return <Provider store={storybookStore}>{storyFn()}</Provider>
+}
