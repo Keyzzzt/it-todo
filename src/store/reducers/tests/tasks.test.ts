@@ -1,16 +1,16 @@
 import { tasksReducer, actions } from '../reducers/tasksReducer';
+import {TaskPriorities, TasksStatuses} from '../../../todolists.api'
 
 const todoLIstId_1 = '87jhg8'
 const todoLIstId_2 = '87jhg3'
 const startState = {
     [todoLIstId_1]: [
-      { id: '1', title: "HTML&CSS", isDone: true },
-      { id: '2', title: "JS", isDone: true },
+        { id: "2w", title: "HTML&CSS", status: TasksStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Hi },
+        { id: "5t", title: "JS", status: TasksStatuses.Completed, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Low },
     ],
-    [todoLIstId_2]: [
-      { id: '1', title: "Toyota oil", isDone: false },
-      { id: '2', title: "Glass cans", isDone: false },
-      { id: '3', title: "Oil filter", isDone: false },
+    [todoLIstId_1]: [
+        { id: "1p", title: "Toyota oil", status: TasksStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Later },
+        { id: "o0l", title: "Glass cans", status: TasksStatuses.Completed, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Hi },
     ],
   }
 

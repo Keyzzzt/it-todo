@@ -1,6 +1,7 @@
-import { actions as todoListsActions } from "./todoListsReducer"
-import { BaseThunkType, InferActionTypes } from "../../../01_Base"
-import { v1 } from "uuid"
+import {actions as todoListsActions} from './todoListsReducer'
+import {BaseThunkType, InferActionTypes} from '../../../01_Base'
+import {v1} from 'uuid'
+import {TaskPriorities, TasksStatuses, TaskType} from '../../../todolists.api'
 
 type ThunkType = BaseThunkType<ActionType>
 type InitialStateType = typeof initialState
@@ -11,24 +12,7 @@ type ActionType =
 export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
-export type TaskType = {
-  id: string
-  title: string
-  isDone: boolean
-}
-
-const initialState: TasksStateType = {
-  "1": [
-    { id: "2w", title: "HTML&CSS", isDone: true },
-    { id: "5t", title: "JS", isDone: true },
-    { id: "4l", title: "ReactJS", isDone: false },
-  ],
-  "2": [
-    { id: "1p", title: "Toyota oil", isDone: false },
-    { id: "o0l", title: "Glass cans", isDone: false },
-    { id: "kd8", title: "Oil filter", isDone: false },
-  ],
-}
+const initialState: TasksStateType = {}
 export const tasksReducer = (
   state: InitialStateType = initialState,
   action: ActionType
@@ -39,7 +23,7 @@ export const tasksReducer = (
         ...state,
         [action.payload.todoListId]: [
           ...state[action.payload.todoListId],
-          { id: v1(), title: action.payload.taskTitle, isDone: false },
+          { id: v1(), title: "Toyota oil", status: TasksStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Later },
         ],
       }
     case "TODOLISTS/TASKS/ADD-TODOLIST":

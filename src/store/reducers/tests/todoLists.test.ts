@@ -1,12 +1,11 @@
-import { TodoListType } from '../reducers/todoListsReducer';
-import { actions, todoListsReducer } from "../reducers/todoListsReducer"
+import {actions, TodoListDomainType, todoListsReducer} from '../reducers/todoListsReducer'
 
 test("Tasks Reducer", () => {
   const todoLIstId_1 = "87jhg8"
   const todoLIstId_2 = "87jhg3"
-  const startState: TodoListType[] = [
-    { id: todoLIstId_1, title: "What to learn", filter: "all" },
-    { id: todoLIstId_2, title: "What to buy", filter: "active" },
+  const startState: TodoListDomainType[] = [
+    { id: todoLIstId_1, title: "What to learn", filter: "all", addDate: '', order: 0 },
+    { id: todoLIstId_2, title: "What to buy", filter: "active", addDate: '', order: 0  },
   ]
 
   const renameTitle = "Hola"

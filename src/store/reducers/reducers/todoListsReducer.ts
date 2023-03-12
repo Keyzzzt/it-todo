@@ -1,29 +1,31 @@
 import { BaseThunkType, InferActionTypes } from "../../../01_Base"
 import { v1 } from "uuid"
+import {TodolistType} from '../../../todolists.api'
 
 type ThunkType = BaseThunkType<ActionType>
 type InitialStateType = typeof initialState
 type ActionType = InferActionTypes<typeof actions>
 
 export type FilterValuesType = "all" | "active" | "completed"
-export type TodoListType = {
-  id: string
-  title: string
+export type TodoListDomainType = TodolistType & {
   filter: FilterValuesType
 }
 
-const initialState: Array<TodoListType> = [
-  { id: "1", title: "What to learn", filter: "all" },
-  { id: "2", title: "What to buy", filter: "active" },
-]
+const initialState: TodoListDomainType[] = []
 export const todoListsReducer = (
   state: InitialStateType = initialState,
   action: ActionType
-): Array<TodoListType> => {
+): TodoListDomainType[] => {
   switch (action.type) {
     case "TODOLISTS/TASKS/ADD-TODOLIST":
       return [
-        { id: action.payload.id, title: action.payload.title, filter: "all" },
+        {
+          id: action.payload.id,
+          title: action.payload.title,
+          filter: "all",
+          addDate: '',
+          order: 0,
+        },
         ...state,
       ]
     case "TODOLISTS/TASKS/REMOVE-TODOLIST":

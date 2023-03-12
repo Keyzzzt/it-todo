@@ -11,14 +11,12 @@ import {
 import { Menu } from "@mui/icons-material"
 import { TodoList } from "./01_Components/TodoList/Todolist"
 import {
-  actions,
-  FilterValuesType,
-  TodoListType,
-} from "./store/reducers/reducers/todoListsReducer"
+    actions,
+    FilterValuesType, TodoListDomainType,
+} from './store/reducers/reducers/todoListsReducer'
 import {
   actions as tasksActions,
   TasksStateType,
-  TaskType,
 } from "./store/reducers/reducers/tasksReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { StateType } from "./store/store"
@@ -27,7 +25,7 @@ import { useCallback } from "react"
 
 export const App = () => {
   console.log("App   render")
-  const todos = useSelector<StateType, Array<TodoListType>>(
+  const todos = useSelector<StateType, Array<TodoListDomainType>>(
     (state) => state.todos
   )
   const tasks = useSelector<StateType, TasksStateType>((state) => state.tasks)

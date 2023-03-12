@@ -1,8 +1,8 @@
 import { memo, FC } from "react"
-import { EditableSpan } from "./../EditableSpan/EditableSpan"
+import { EditableSpan } from '../EditableSpan/EditableSpan'
 import { IconButton, ListItem } from "@mui/material"
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import { TaskType } from "../../store/reducers/reducers/tasksReducer"
+import {TasksStatuses, TaskType} from '../../todolists.api'
 
 type TaskProps = {
   task: TaskType
@@ -25,7 +25,7 @@ export const Task: FC<TaskProps> = memo(
       <ListItem key={task.id}>
         <input
           type="checkbox"
-          checked={task.isDone}
+          checked={task.status !== TasksStatuses.Completed}
           onChange={(e) =>
             changeTaskStatus(e.target.checked, task.id, todolistId)
           }
