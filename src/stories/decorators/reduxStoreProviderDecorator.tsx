@@ -1,8 +1,8 @@
 import { Provider } from "react-redux"
 import { applyMiddleware, combineReducers, compose, createStore } from "redux"
 import thunk from "redux-thunk"
-import { tasksReducer } from "../store/reducers/reducers/tasksReducer"
-import { todoListsReducer } from "../store/reducers/reducers/todoListsReducer"
+import { tasksReducer } from "../../store/reducers/reducers/tasksReducer"
+import { todoListsReducer } from "../../store/reducers/reducers/todoListsReducer"
 
 const rootReducer = combineReducers({
   todos: todoListsReducer,

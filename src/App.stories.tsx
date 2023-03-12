@@ -1,6 +1,6 @@
 import { App } from "./App"
 import { action } from "@storybook/addon-actions"
-import { reduxStoreProviderDecorator } from "./stories/reduxStoreProviderDecorator"
+import { reduxStoreProviderDecorator } from "./stories/decorators/reduxStoreProviderDecorator"
 
 export default {
   title: "App Component",
