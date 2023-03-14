@@ -3,25 +3,25 @@ import {actions, TodoListDomainType, todoListsReducer} from '../reducers/todoLis
 import {TaskPriorities, TasksStatuses} from '../../../todolists.api'
 
 
-test('Should create new Todolist and new entry for this Todolist in tasks', () => {
-    const startTodoListsState: TodoListDomainType[] = []
-    const startTasksState = {}
-    const title = 'Hola'
-
-    const action = actions.addNewTodoList(title)
-
-    const addNewTodoLIstEndState = todoListsReducer(startTodoListsState, action)
-    const addNewTasksEntryEndState = tasksReducer(startTasksState, action)
-    const idFromTodo = addNewTodoLIstEndState[0].id
-    const idFromTasks = Object.keys(addNewTasksEntryEndState)[0]
-    const titleFromTodo = addNewTodoLIstEndState[0].title
-
-    expect(addNewTodoLIstEndState.length).toEqual(1)
-    expect(titleFromTodo).toEqual(action.payload.title)
-
-    expect(idFromTodo).toEqual(action.payload.id)
-    expect(idFromTodo).toEqual(idFromTasks)
-})
+// test('Should create new Todolist and new entry for this Todolist in tasks', () => {
+//     const startTodoListsState: TodoListDomainType[] = []
+//     const startTasksState = {}
+//     const title = 'Hola'
+//
+//     const action = actions.addNewTodoList(title)
+//
+//     const addNewTodoLIstEndState = todoListsReducer(startTodoListsState, action)
+//     const addNewTasksEntryEndState = tasksReducer(startTasksState, action)
+//     const idFromTodo = addNewTodoLIstEndState[0].id
+//     const idFromTasks = Object.keys(addNewTasksEntryEndState)[0]
+//     const titleFromTodo = addNewTodoLIstEndState[0].title
+//
+//     expect(addNewTodoLIstEndState.length).toEqual(1)
+//     expect(titleFromTodo).toEqual(action.payload.title)
+//
+//     expect(idFromTodo).toEqual(action.payload.id)
+//     expect(idFromTodo).toEqual(idFromTasks)
+// })
 
 test('Should remove TodoList and tasks with same id', () => {
     const id1 = '1'

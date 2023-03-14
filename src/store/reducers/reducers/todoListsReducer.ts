@@ -1,6 +1,7 @@
 import { BaseThunkType, InferActionTypes } from "../../../01_Base"
 import { v1 } from "uuid"
-import {TodolistType} from '../../../todolists.api'
+import { ServerError, todolistsApi, TodolistType } from "../../../todolists.api"
+import axios from "axios"
 
 type ThunkType = BaseThunkType<ActionType>
 type InitialStateType = typeof initialState
@@ -17,46 +18,121 @@ export const todoListsReducer = (
   action: ActionType
 ): TodoListDomainType[] => {
   switch (action.type) {
-    case "TODOLISTS/TASKS/ADD-TODOLIST":
-      return [
-        {
-          id: action.payload.id,
-          title: action.payload.title,
-          filter: "all",
-          addDate: '',
-          order: 0,
-        },
-        ...state,
-      ]
+    case "TODOLISTS&TASKS/CREATE-TODOLIST&TASKS":
+      return [{ ...action.payload.todolist, filter: "all" }, ...state]
     case "TODOLISTS/TASKS/REMOVE-TODOLIST":
-      return state.filter((t) => t.id !== action.payload.id)
+      return state.filter((t) => t.id !== action.payload.todolistId)
     case "TODOLISTS/SET-TITLE":
       return state.map((t) =>
-        t.id === action.payload.id ? { ...t, title: action.payload.title } : t
+        t.id === action.payload.todolistId
+          ? { ...t, title: action.payload.title }
+          : t
       )
     case "TODOLISTS/SET-FILTER":
       return state.map((t) =>
-        t.id === action.payload.id ? { ...t, filter: action.payload.filter } : t
+        t.id === action.payload.todolistId
+          ? { ...t, filter: action.payload.filter }
+          : t
       )
+    case "TODOLISTS&TASKS/SET-TODOLISTS&TASKS":
+      return action.payload.todolists.map((t) => ({ ...t, filter: "all" }))
     default:
       return state
   }
 }
 export const actions = {
-  addNewTodoList: (title: string) => ({
-    type: "TODOLISTS/TASKS/ADD-TODOLIST" as const,
-    payload: { title, id: v1() },
-  }),
-  removeTodoList: (id: string) => ({
-    type: "TODOLISTS/TASKS/REMOVE-TODOLIST" as const,
-    payload: { id },
-  }),
-  setTodoListTitle: (id: string, title: string) => ({
-    type: "TODOLISTS/SET-TITLE" as const,
-    payload: { title, id },
-  }),
-  setTodoListFilter: (id: string, filter: FilterValuesType) => ({
-    type: "TODOLISTS/SET-FILTER" as const,
-    payload: { id, filter },
-  }),
+  addNewTodoList: (todolist: TodolistType) =>
+    ({
+      type: "TODOLISTS&TASKS/CREATE-TODOLIST&TASKS",
+      payload: { todolist, todolistId: todolist.id },
+    } as const),
+  removeTodoList: (todolistId: string) =>
+    ({
+      type: "TODOLISTS/TASKS/REMOVE-TODOLIST",
+      payload: { todolistId },
+    } as const),
+  setTodoListTitle: (todolistId: string, title: string) =>
+    ({
+      type: "TODOLISTS/SET-TITLE",
+      payload: { title, todolistId },
+    } as const),
+  setTodoListFilter: (todolistId: string, filter: FilterValuesType) =>
+    ({
+      type: "TODOLISTS/SET-FILTER",
+      payload: { todolistId, filter },
+    } as const),
+  setTodoLists: (todolists: TodolistType[]) =>
+    ({
+      type: "TODOLISTS&TASKS/SET-TODOLISTS&TASKS",
+      payload: { todolists },
+    } as const),
+}
+
+export const fetchTodolists = (): ThunkType => {
+  return async (dispatch) => {
+    try {
+      const todolists = await todolistsApi.getTodolists()
+      dispatch(actions.setTodoLists(todolists))
+    } catch (err) {
+      if (axios.isAxiosError<ServerError>(err)) {
+        if (err && err.response) {
+          // dispatch(actions.setErrorData(err.response.data.message, err.response.data.fails))
+        }
+      } else {
+        console.error(err)
+      }
+    }
+  }
+}
+export const createTodolist = (title: string): ThunkType => {
+  return async (dispatch) => {
+    try {
+      const todolist = await todolistsApi.createTodolist(title)
+      dispatch(actions.addNewTodoList(todolist))
+    } catch (err) {
+      if (axios.isAxiosError<ServerError>(err)) {
+        if (err && err.response) {
+          // dispatch(actions.setErrorData(err.response.data.message, err.response.data.fails))
+        }
+      } else {
+        console.error(err)
+      }
+    }
+  }
+}
+export const deleteTodolist = (todolistId: string): ThunkType => {
+  return async (dispatch) => {
+    try {
+      await todolistsApi.deleteTodolist(todolistId)
+      dispatch(actions.removeTodoList(todolistId))
+    } catch (err) {
+      if (axios.isAxiosError<ServerError>(err)) {
+        if (err && err.response) {
+          // dispatch(actions.setErrorData(err.response.data.message, err.response.data.fails))
+        }
+      } else {
+        console.error(err)
+      }
+    }
+  }
+}
+
+export const changeTodolistTitle = (
+  todolistId: string,
+  title: string
+): ThunkType => {
+  return async (dispatch) => {
+    try {
+      await todolistsApi.updateTodolist(todolistId, title)
+      dispatch(actions.setTodoListTitle(todolistId, title))
+    } catch (err) {
+      if (axios.isAxiosError<ServerError>(err)) {
+        if (err && err.response) {
+          // dispatch(actions.setErrorData(err.response.data.message, err.response.data.fails))
+        }
+      } else {
+        console.error(err)
+      }
+    }
+  }
 }
