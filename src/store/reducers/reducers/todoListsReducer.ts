@@ -18,24 +18,26 @@ export const todoListsReducer = (
   action: ActionType
 ): TodoListDomainType[] => {
   switch (action.type) {
-    case "TODOLISTS&TASKS/CREATE-TODOLIST&TASKS":
-      return [{ ...action.payload.todolist, filter: "all" }, ...state]
-    case "TODOLISTS/TASKS/REMOVE-TODOLIST":
-      return state.filter((t) => t.id !== action.payload.todolistId)
-    case "TODOLISTS/SET-TITLE":
-      return state.map((t) =>
-        t.id === action.payload.todolistId
-          ? { ...t, title: action.payload.title }
-          : t
-      )
     case "TODOLISTS/SET-FILTER":
       return state.map((t) =>
         t.id === action.payload.todolistId
           ? { ...t, filter: action.payload.filter }
           : t
       )
+    case "TODOLISTS/SET-TITLE":
+      return state.map((t) =>
+        t.id === action.payload.todolistId
+          ? { ...t, title: action.payload.title }
+          : t
+      )
+    case "TODOLISTS/TASKS/REMOVE-TODOLIST":
+      return state.filter((t) => t.id !== action.payload.todolistId)
     case "TODOLISTS/SET-TODOLISTS":
       return action.payload.todolists.map((t) => ({ ...t, filter: "all" }))
+
+    case "TODOLISTS&TASKS/CREATE-TODOLIST&TASKS":
+      return [{ ...action.payload.todolist, filter: "all" }, ...state]
+
     default:
       return state
   }

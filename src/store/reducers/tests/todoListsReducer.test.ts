@@ -24,51 +24,54 @@ const startState: TodoListDomainType[] = [
 ]
 
 test("Todolist filter should be changed", () => {
-  const filterValue = "completed"
+  const newFilterValue = "completed"
+  const todolistIdToUpdate = todoLIstId_2
   const endState = todoListsReducer(
     startState,
-    actions.setTodoListFilter(todoLIstId_2, filterValue)
+    actions.setTodoListFilter(todolistIdToUpdate, newFilterValue)
   )
-
-  expect(endState.find((el) => el.id === todoLIstId_2)!.filter).toEqual(
-    filterValue
-  )
+  const updatedTodolist = endState.find((el) => el.id === todolistIdToUpdate)
+  expect(updatedTodolist?.filter).toEqual(newFilterValue)
 })
+test("Todolist title should be renamed", () => {
+  const newTitle = "Hola"
+  const todolistIdToUpdate = todoLIstId_1
 
-test("Todolist should be renamed", () => {
-  const renameTitle = "Hola"
   const endState = todoListsReducer(
     startState,
-    actions.setTodoListTitle(todoLIstId_1, renameTitle)
+    actions.setTodoListTitle(todolistIdToUpdate, newTitle)
   )
-  expect(endState.some((el) => el.title === renameTitle)).toEqual(true)
+  const updatedTodolist = endState.find((el) => el.id === todolistIdToUpdate)
+  expect(updatedTodolist?.title).toEqual(newTitle)
 })
 test("Todolist should be removed", () => {
+  const todolistIdToDelete = todoLIstId_1
+
   const endState = todoListsReducer(
     startState,
-    actions.removeTodoList(todoLIstId_2)
+    actions.removeTodoList(todolistIdToDelete)
   )
+
   expect(endState.length).toEqual(1)
-  expect(endState.some((el) => el.id === todoLIstId_2)).toEqual(false)
+  expect(endState.some((el) => el.id === todolistIdToDelete)).toEqual(false)
 })
 test("Todolists should  be set", () => {
-  const todolists = [
-    {
-      id: "erf",
-      title: "What to learn",
-      filter: "all",
-      addDate: "",
-      order: 0,
-    },
-    {
-      id: "sd",
-      title: "What to buy",
-      filter: "active",
-      addDate: "",
-      order: 0,
-    },
-  ]
-
-  const endState = todoListsReducer([], actions.setTodoLists(todolists))
+  const endState = todoListsReducer([], actions.setTodoLists(startState))
   expect(endState.length).toEqual(2)
+})
+test("New Todolists should be created", () => {
+  const newTodolistId = "wj2389ewhjdkbwn"
+  const newTodolist = {
+    id: newTodolistId,
+    title: "Lucky",
+    filter: "all",
+    addDate: "",
+    order: 0,
+  }
+  const endState = todoListsReducer(
+    startState,
+    actions.addNewTodoList(newTodolist)
+  )
+  expect(endState.length).toEqual(3)
+  expect(endState.some((el) => el.id === newTodolistId)).toEqual(true)
 })
