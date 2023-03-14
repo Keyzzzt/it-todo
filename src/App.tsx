@@ -56,8 +56,8 @@ export const App = () => {
     [dispatch]
   )
   const addTask = useCallback(
-    (title: string, todoListId: string) => {
-      dispatch(createTask(todoListId, title))
+    (taskId: string, title: string) => {
+      dispatch(createTask(taskId, title))
     },
     [dispatch]
   )

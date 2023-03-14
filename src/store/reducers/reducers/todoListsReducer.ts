@@ -34,7 +34,7 @@ export const todoListsReducer = (
           ? { ...t, filter: action.payload.filter }
           : t
       )
-    case "TODOLISTS&TASKS/SET-TODOLISTS&TASKS":
+    case "TODOLISTS/SET-TODOLISTS":
       return action.payload.todolists.map((t) => ({ ...t, filter: "all" }))
     default:
       return state
@@ -63,7 +63,7 @@ export const actions = {
     } as const),
   setTodoLists: (todolists: TodolistType[]) =>
     ({
-      type: "TODOLISTS&TASKS/SET-TODOLISTS&TASKS",
+      type: "TODOLISTS/SET-TODOLISTS",
       payload: { todolists },
     } as const),
 }

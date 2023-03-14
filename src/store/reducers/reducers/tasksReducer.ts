@@ -52,29 +52,11 @@ export const tasksReducer = (
       return stateCopy
     }
 
-    case "TODOLISTS&TASKS/SET-TODOLISTS&TASKS": {
-      const stateCopy = { ...state }
-      action.payload.todolists.forEach((t) => {
-        stateCopy[t.id] = []
-      })
-
-      return stateCopy
-    }
-
     case "TASKS/REMOVE-SINGLE_TASK":
       return {
         ...state,
         [action.payload.todoListId]: state[action.payload.todoListId].filter(
           (t) => t.id !== action.payload.taskId
-        ),
-      }
-    case "TASKS/RENAME-TASK":
-      return {
-        ...state,
-        [action.payload.todoListId]: state[action.payload.todoListId].map((t) =>
-          t.id === action.payload.taskId
-            ? { ...t, title: action.payload.title }
-            : t
         ),
       }
     case "TASKS/UPDATE":
@@ -104,11 +86,6 @@ export const actions = {
     ({
       type: "TASKS/REMOVE-SINGLE_TASK",
       payload: { todoListId, taskId },
-    } as const),
-  renameTask: (todoListId: string, taskId: string, title: string) =>
-    ({
-      type: "TASKS/RENAME-TASK",
-      payload: { todoListId, taskId, title },
     } as const),
   updateTask: (
     todoListId: string,
@@ -165,8 +142,6 @@ export const createTask = (
   return async (dispatch) => {
     try {
       const newTask = await todolistsApi.createTask(todolistId, taskTitle)
-      console.log(newTask)
-
       dispatch(actions.addNewTask(todolistId, newTask))
     } catch (err) {
       if (axios.isAxiosError<ServerError>(err)) {

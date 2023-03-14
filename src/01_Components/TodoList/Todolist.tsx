@@ -16,7 +16,7 @@ type PropsType = {
   title: string
   tasks: TaskType[]
   filter: string
-  addTask: (title: string, removeTodoList: string) => void
+  addTask: (taskId: string, title: string) => void
   addTodoList: (title: string) => void
   removeTodoList: (todoListId: string) => void
   changeTodoListFilter: (
@@ -54,7 +54,7 @@ export const TodoList = memo(
     }
     const addTaskHandler = useCallback(
       (title: string) => {
-        addTask(title, todoListId)
+        addTask(todoListId, title)
       },
       [addTask, todoListId]
     )

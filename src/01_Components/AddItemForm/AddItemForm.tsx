@@ -18,7 +18,7 @@ export const AddItemForm = memo(({ placeHolder, addItem }: PropsType) => {
     error && setError(false)
     setTitle(e.currentTarget.value)
   }
-  const onClickAddItem = () => {
+  const addItemHandler = () => {
     if (title.trim()) {
       addItem(title)
       setTitle("")
@@ -28,7 +28,7 @@ export const AddItemForm = memo(({ placeHolder, addItem }: PropsType) => {
   }
 
   const onEnter = (e: KeyboardEvent<HTMLInputElement>) =>
-    e.key === "Enter" && onClickAddItem()
+    e.key === "Enter" && addItemHandler()
 
   return (
     <div>
@@ -46,7 +46,7 @@ export const AddItemForm = memo(({ placeHolder, addItem }: PropsType) => {
         helperText={error && "Task title is required!"}
       />
 
-      <IconButton onClick={onClickAddItem}>
+      <IconButton onClick={addItemHandler}>
         <AddBoxOutlined />
       </IconButton>
     </div>
