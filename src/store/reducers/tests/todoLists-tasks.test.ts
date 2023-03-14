@@ -1,6 +1,7 @@
-import {tasksReducer, TasksStateType} from './../reducers/tasksReducer'
+import {tasksReducer, TasksStateType} from '../reducers/tasksReducer'
 import {actions, TodoListDomainType, todoListsReducer} from '../reducers/todoListsReducer'
 import {TaskPriorities, TasksStatuses} from '../../../todolists.api'
+
 
 test('Should create new Todolist and new entry for this Todolist in tasks', () => {
     const startTodoListsState: TodoListDomainType[] = []
@@ -92,9 +93,7 @@ test('Should remove TodoList and tasks with same id', () => {
 
     const removeTodoEndState = todoListsReducer(todoStartState, action)
     const removeTaskEndState = tasksReducer(tasksStartState, action)
-
     expect(removeTodoEndState.length).toEqual(1)
     expect(removeTodoEndState.some(el => el.id === idToDelete)).toEqual(false)
-
     expect(removeTaskEndState[idToDelete]).toEqual(undefined)
 })
