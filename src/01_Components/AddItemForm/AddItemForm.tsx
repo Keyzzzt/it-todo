@@ -1,17 +1,18 @@
-import { ChangeEvent, KeyboardEvent, useState, memo } from "react"
-import s from "./styles.module.css"
-import { IconButton, TextField } from "@mui/material"
-import { AddBoxOutlined } from "@mui/icons-material"
+import { ChangeEvent, KeyboardEvent, useState, memo } from 'react'
+import s from './styles.module.css'
+import { IconButton, TextField } from '@mui/material'
+import { AddBoxOutlined } from '@mui/icons-material'
 
 type PropsType = {
   placeHolder: string
   addItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const AddItemForm = memo(({ placeHolder, addItem }: PropsType) => {
-  console.log("AddItemForm   render")
+export const AddItemForm = memo(({ placeHolder, addItem, disabled }: PropsType) => {
+  console.log('AddItemForm   render')
 
-  const [title, setTitle] = useState<string>("")
+  const [title, setTitle] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
 
   const setTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,14 +22,13 @@ export const AddItemForm = memo(({ placeHolder, addItem }: PropsType) => {
   const addItemHandler = () => {
     if (title.trim()) {
       addItem(title)
-      setTitle("")
+      setTitle('')
     } else {
       setError(true)
     }
   }
 
-  const onEnter = (e: KeyboardEvent<HTMLInputElement>) =>
-    e.key === "Enter" && addItemHandler()
+  const onEnter = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addItemHandler()
 
   return (
     <div>
@@ -43,10 +43,11 @@ export const AddItemForm = memo(({ placeHolder, addItem }: PropsType) => {
         variant="outlined"
         size="small"
         error={error}
-        helperText={error && "Task title is required!"}
+        helperText={error && 'Task title is required!'}
+        disabled={disabled}
       />
 
-      <IconButton onClick={addItemHandler}>
+      <IconButton onClick={addItemHandler} disabled={disabled}>
         <AddBoxOutlined />
       </IconButton>
     </div>

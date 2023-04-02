@@ -1,40 +1,85 @@
-import { Provider } from "react-redux"
-import { applyMiddleware, combineReducers, compose, createStore } from "redux"
-import thunk from "redux-thunk"
-import { tasksReducer } from "../../store/reducers/reducers/tasksReducer"
-import { todoListsReducer } from "../../store/reducers/reducers/todoListsReducer"
-import {TaskPriorities, TasksStatuses} from '../../todolists.api'
+import { Provider } from 'react-redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
+import thunk from 'redux-thunk'
+import { appReducer } from '../../app/appReducer'
+import { tasksReducer } from '../../store/reducers/reducers/tasksReducer'
+import { todoListsReducer } from '../../store/reducers/reducers/todoListsReducer'
+import { v1 } from 'uuid'
+import { TaskPriorities, TasksStatuses } from '../../todolists.api'
 
 const rootReducer = combineReducers({
+  app: appReducer,
   todos: todoListsReducer,
   tasks: tasksReducer,
 })
+const id1 = v1()
+const id2 = v1()
 
-const initialGlobalState = {
+const initialGlobalState: StateType = {
+  app: { status: 'idle', error: '' },
   todos: [
-    { id: "1", title: "What to learn", filter: "all", addDate: '', order: 0 },
-    { id: "2", title: "What to buy", filter: "active", addDate: '', order: 0 },
+    { id: id1, title: 'New Todo', filter: 'all', entityStatus: 'idle', addDate: '', order: 0 },
+    { id: id2, title: 'Old Todo', filter: 'all', entityStatus: 'loading', addDate: '', order: 0 },
   ],
   tasks: {
-    "1": [
-      { id: "2w", title: "HTML&CSS", status: TasksStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Hi },
-      { id: "5t", title: "JS", status: TasksStatuses.Completed, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Low },
+    [id1]: [
+      {
+        id: v1(),
+        title: 'Classes',
+        status: TasksStatuses.New,
+        todoListId: id1,
+        description: '',
+        startDate: '',
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+      {
+        id: v1(),
+        title: 'Finnish Incubator',
+        status: TasksStatuses.New,
+        todoListId: id1,
+        description: '',
+        startDate: '',
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+      { id: v1(), title: 'RTK', status: TasksStatuses.New, todoListId: id1, description: '', startDate: '', addedDate: '', deadline: '', order: 0, priority: TaskPriorities.Low },
     ],
-    "2": [
-      { id: "1p", title: "Toyota oil", status: TasksStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Later },
-      { id: "o0l", title: "Glass cans", status: TasksStatuses.Completed, addedDate: '', deadline: '', order: 0, startDate: '', todoListId: '1', description: '', priority: TaskPriorities.Hi },
+    [id2]: [
+      {
+        id: v1(),
+        title: 'Classes',
+        status: TasksStatuses.New,
+        todoListId: id2,
+        description: '',
+        startDate: '',
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+      {
+        id: v1(),
+        title: 'Finnish Incubator',
+        status: TasksStatuses.New,
+        todoListId: id2,
+        description: '',
+        startDate: '',
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+      { id: v1(), title: 'RTK', status: TasksStatuses.New, todoListId: id2, description: '', startDate: '', addedDate: '', deadline: '', order: 0, priority: TaskPriorities.Low },
     ],
   },
 }
 
-// @ts-ignore
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-// @ts-ignore
-export const storybookStore = createStore(
-  rootReducer,
-  initialGlobalState as StateType,
-  composeEnhancers(applyMiddleware(thunk))
-)
+export const storybookStore = createStore(rootReducer, initialGlobalState as StateType, applyMiddleware(thunk))
 export type StateType = ReturnType<typeof rootReducer>
 
 export const reduxStoreProviderDecorator = (storyFn: any) => {

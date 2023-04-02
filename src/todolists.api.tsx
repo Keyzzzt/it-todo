@@ -1,13 +1,13 @@
-import axios from "axios"
+import axios, { AxiosError } from 'axios'
 
 const settings = {
   withCredentials: true,
   headers: {
-    "API-KEY": "71e6e901-cd3a-49fe-a2c6-dffd513be2ad",
+    'API-KEY': '71e6e901-cd3a-49fe-a2c6-dffd513be2ad',
   },
 }
 const instance = axios.create({
-  baseURL: "https://social-network.samuraijs.com/api/1.1/",
+  baseURL: 'https://social-network.samuraijs.com/api/1.1/',
   ...settings,
 })
 
@@ -53,7 +53,7 @@ type CreateTodolistDataType = {
 type CreateAndUpdateTaskType = {
   item: TaskType
 }
-type ResponseType<D = {}> = {
+export type ServerResponseType<D = {}> = {
   resultCode: number
   messages: string[]
   fieldsErrors: string[]
@@ -75,53 +75,27 @@ export type UpdateTaskServerModelType = {
 
 export const todolistsApi = {
   getTodolists() {
-    return instance
-      .get<TodolistType[]>(`todo-lists`)
-      .then((res: any) => res.data)
+    return instance.get<TodolistType[]>(`todo-lists`).then((res) => res.data)
   },
   createTodolist(title: string) {
-    return instance
-      .post<ResponseType<CreateTodolistDataType>>(`todo-lists`, { title })
-      .then((res: any) => res.data.data.item)
+    return instance.post<ServerResponseType<CreateTodolistDataType>>(`todo-lists`, { title }).then((res) => res.data)
   },
   deleteTodolist(todolistId: string) {
-    return instance
-      .delete<ResponseType>(`todo-lists/${todolistId}`)
-      .then((res: any) => res.data)
+    return instance.delete<ServerResponseType>(`todo-lists/${todolistId}`).then((res) => res.data)
   },
   updateTodolist(todolistId: string, title: string) {
-    return instance
-      .put<ResponseType>(`todo-lists/${todolistId}`, { title })
-      .then((res: any) => res.data)
+    return instance.put<ServerResponseType>(`todo-lists/${todolistId}`, { title }).then((res) => res.data)
   },
   getTasks(todolistId: string) {
-    return instance
-      .get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
-      .then((res: any) => res.data)
+    return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`).then((res) => res.data)
   },
   createTask(todolistId: string, title: string) {
-    return instance
-      .post<ResponseType<CreateAndUpdateTaskType>>(
-        `todo-lists/${todolistId}/tasks`,
-        { title }
-      )
-      .then((res: any) => res.data.data.item)
+    return instance.post<ServerResponseType<CreateAndUpdateTaskType>>(`todo-lists/${todolistId}/tasks`, { title }).then((res) => res.data)
   },
   deleteTask(todolistId: string, taskId: string) {
-    return instance
-      .delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
-      .then((res: any) => res.data)
+    return instance.delete<ServerResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`).then((res) => res.data)
   },
-  updateTask(
-    todolistId: string,
-    taskId: string,
-    updateData: UpdateTaskServerModelType
-  ) {
-    return instance
-      .put<ResponseType<CreateAndUpdateTaskType>>(
-        `todo-lists/${todolistId}/tasks/${taskId}`,
-        { ...updateData }
-      )
-      .then((res: any) => res.data)
+  updateTask(todolistId: string, taskId: string, updateData: UpdateTaskServerModelType) {
+    return instance.put<ServerResponseType<CreateAndUpdateTaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, { ...updateData }).then((res) => res.data)
   },
 }
