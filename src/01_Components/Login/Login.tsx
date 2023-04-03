@@ -1,4 +1,3 @@
-import React from 'react'
 import Grid from '@mui/material/Grid'
 import Checkbox from '@mui/material/Checkbox'
 import FormControl from '@mui/material/FormControl'
@@ -8,14 +7,14 @@ import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
-import { login, LoginStateType } from '../../store/reducers/reducers/loginReducer'
-import { StateType } from '../../store/store'
+import { useDispatch } from 'react-redux'
+import { login } from '../../store/reducers/reducers/loginReducer'
 import { Navigate } from 'react-router-dom'
+import { useTypedSelector } from '../../01_Base'
 
 export const Login = () => {
   const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector<StateType, LoginStateType>((state) => state.login)
+  const { isLoggedIn } = useTypedSelector((state) => state.login)
   const formik = useFormik({
     validate: (values) => {
       const errors: any = {}

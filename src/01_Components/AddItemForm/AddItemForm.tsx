@@ -10,7 +10,7 @@ type PropsType = {
 }
 
 export const AddItemForm = memo(({ placeHolder, addItem, disabled }: PropsType) => {
-  console.log('AddItemForm   render')
+  // console.log('AddItemForm   render')
 
   const [title, setTitle] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
