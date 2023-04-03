@@ -1,25 +1,37 @@
 import { FC, useCallback } from 'react'
 import { Grid, Paper } from '@mui/material'
 import { TodoList } from '../Todolist'
-import { actions, changeTodolistTitle, deleteTodolist, fetchTodolists, FilterValuesType, TodoListDomainType } from '../../../store/reducers/reducers/todoListsReducer'
+import {
+  actions,
+  changeTodolistTitle,
+  createTodolist,
+  deleteTodolist,
+  fetchTodolists,
+  FilterValuesType,
+  TodoListDomainType,
+} from '../../../store/reducers/reducers/todoListsReducer'
 import { TasksStatuses } from '../../../todolists.api'
 import { createTask, deleteTask, TasksStateType, updateTask } from '../../../store/reducers/reducers/tasksReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { StateType } from '../../../store/store'
 import { useEffect } from 'react'
+import { AddItemForm } from '../../AddItemForm/AddItemForm'
+import { Link, Navigate } from 'react-router-dom'
+import { LoginStateType } from '../../../store/reducers/reducers/loginReducer'
 
 type TodolistsListProps = {
   demo?: boolean
 }
 
 export const TodolistsList: FC<TodolistsListProps> = ({ demo }) => {
-  const dispatch = useDispatch()
+  const { isLoggedIn } = useSelector<StateType, LoginStateType>((state) => state.login)
   const tasks = useSelector<StateType, TasksStateType>((state) => state.tasks)
   const todolists = useSelector<StateType, Array<TodoListDomainType>>((state) => state.todos)
+  const dispatch = useDispatch()
   useEffect(() => {
-    if (demo) return
+    if (demo || isLoggedIn) return
     dispatch(fetchTodolists())
-  }, [dispatch, demo])
+  }, [dispatch, demo, isLoggedIn])
 
   const addTask = useCallback(
     (taskId: string, title: string) => {
@@ -64,8 +76,19 @@ export const TodolistsList: FC<TodolistsListProps> = ({ demo }) => {
     },
     [dispatch]
   )
+  const addTodoList = useCallback(
+    (title: string) => {
+      dispatch(createTodolist(title))
+    },
+    [dispatch]
+  )
+
+  if (!isLoggedIn) return <Navigate to="/login" />
+
   return (
     <>
+      <AddItemForm addItem={addTodoList} placeHolder={'Add new todo list'} />
+
       {todolists.length &&
         todolists.map((t) => (
           <Grid item key={t.id}>

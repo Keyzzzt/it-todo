@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import { LoginParamsType } from './store/reducers/reducers/loginReducer'
 
 const settings = {
   withCredentials: true,
@@ -59,6 +60,14 @@ export type ServerResponseType<D = {}> = {
   fieldsErrors: string[]
   data: D
 }
+type LoginResponseType = {
+  userId?: number
+}
+type AuthResponseType = {
+  id: number
+  email: string
+  login: string
+}
 type GetTasksResponse = {
   totalCount: number
   error: null | string
@@ -97,5 +106,16 @@ export const todolistsApi = {
   },
   updateTask(todolistId: string, taskId: string, updateData: UpdateTaskServerModelType) {
     return instance.put<ServerResponseType<CreateAndUpdateTaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, { ...updateData }).then((res) => res.data)
+  },
+}
+export const authAPI = {
+  login(params: LoginParamsType) {
+    return instance.post<ServerResponseType<LoginResponseType>>(`auth/login`, { ...params }).then((res) => res.data)
+  },
+  logout() {
+    return instance.delete<ServerResponseType<LoginResponseType>>(`auth/login`).then((res) => res.data)
+  },
+  auth() {
+    return instance.get<ServerResponseType<AuthResponseType>>(`auth/me`).then((res) => res.data)
   },
 }

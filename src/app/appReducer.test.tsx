@@ -3,6 +3,7 @@ import { appReducer, actions, AppStateType } from './appReducer'
 const startState: AppStateType = {
   status: 'idle',
   error: '',
+  isInitialized: false,
 }
 
 test('Should set status', () => {
@@ -19,6 +20,7 @@ test('Should reset error message', () => {
   const startState: AppStateType = {
     status: 'idle',
     error: 'Some Error',
+    isInitialized: false,
   }
   const endState = appReducer(startState, actions.resetError())
   expect(endState.error).toEqual('')
